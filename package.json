@@ -1,0 +1,13 @@
+{
+	"name": "com.miisko-wiiiyaas.tween-daddy",
+	"version": "0.0.1",
+	"displayName": "Tween Daddy",
+	"description": "A lightweight tween animation library for Unity",
+	"unity": "2021.3",
+	"author": {
+		"name": "Ashley Courchene",
+		"email": "acour008@fastmail.com",
+		"url": "https://github.com/ACour008"},
+	"license": "CC-BY-NC-4.0",
+	"licensesUrl": "https://spdx.org/licenses/CC-BY-NC-4.0.html"
+}
