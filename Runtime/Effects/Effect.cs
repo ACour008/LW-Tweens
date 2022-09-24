@@ -12,6 +12,7 @@ namespace Tweens
         protected ILerper _lerper;
         protected IEnumerator lerpCoroutine;
         protected IEnumerator stopCoroutine;
+        protected bool isMarkedForErasure;
 
         /// <summary>
         /// An EventHandler that is invoked when the effect is first executed.
@@ -34,6 +35,11 @@ namespace Tweens
         public bool IsPaused { get => _lerper.IsPaused; }
 
         /// <summary>
+        /// Indicates whether the effect is marked to be destroyed. Usually after
+        /// </summary>
+        public bool IsMarkedForErasure { get => isMarkedForErasure; }
+
+        /// <summary>
         /// Begins the animation of the Effect.
         /// </summary>
         /// <param name="owner">The MonoBehaviour object that the Effect Builder belongs to
@@ -49,6 +55,8 @@ namespace Tweens
         private IEnumerator SendCompletedMessage()
         {
             yield return new WaitUntil(() => _lerper.IsComplete);
+
+            isMarkedForErasure = true;
             OnEffectCompleted?.Invoke(this, EventArgs.Empty);
         }
 
@@ -68,6 +76,7 @@ namespace Tweens
             owner.StopCoroutine(lerpCoroutine);
 
             OnEffectCompleted?.Invoke(this, EventArgs.Empty);
+            isMarkedForErasure = true;
             _lerper.IsComplete = true;
         }
 
