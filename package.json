@@ -1,6 +1,6 @@
 {
 	"name": "com.miisko-wiiyaas.tween-daddy",
-	"version": "0.0.1",
+	"version": "0.1.1-alpha",
 	"displayName": "Tween Daddy",
 	"description": "A lightweight tween animation library for Unity",
 	"unity": "2021.3",

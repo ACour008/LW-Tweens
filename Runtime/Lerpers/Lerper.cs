@@ -47,31 +47,6 @@ namespace Tweens.Lerpers
         /// <returns>An IEnumerator object that returns either one of Unity's WaitFor...
         /// objects or null, depending on the state of the animation.</returns>
         public abstract IEnumerator Start();
-
-        /// <summary>
-        /// Resets the animation to its starting values.
-        /// </summary>
-        public void Restart()
-        {
-            _setter(_startValue);
-            _isComplete = false;
-            _isPaused = false;
-            _timeElapsed = 0;
-        }
-
-        /// <summary>
-        /// Conditionally resets the starting values based on the argument given.
-        /// </summary>
-        /// <param name="keepOriginalStartValue">Determines whether the Effect's start value (ie., the value of the GameObject
-        /// upon the first execution) is kept when reseting the Effect. If true, the start value stays the same. If false,
-        /// the start value will be updated according to the GameObject's values of where it's at in the scene.</param>
-        public void Reset(bool keepOriginalStartValue = false)
-        {
-            if (!keepOriginalStartValue) _startValue = _getter();
-
-            Restart();
-
-        }
     }
 
 }

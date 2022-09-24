@@ -14,6 +14,7 @@ namespace Tweens
         protected IEnumerator stopCoroutine;
         protected bool isMarkedForErasure;
 
+        #region EventHandlers
         /// <summary>
         /// An EventHandler that is invoked when the effect is first executed.
         /// </summary>
@@ -23,7 +24,9 @@ namespace Tweens
         /// An EventHandler that is invoked after the effect's animations are done.
         /// </summary>
         public event EventHandler OnEffectCompleted;
+        #endregion
 
+        #region Fields
         /// <summary>
         /// Indicates whether the effect is playing and is not paused.
         /// </summary>
@@ -38,7 +41,9 @@ namespace Tweens
         /// Indicates whether the effect is marked to be destroyed. Usually after
         /// </summary>
         public bool IsMarkedForErasure { get => isMarkedForErasure; }
+        #endregion
 
+        #region MainAPI
         /// <summary>
         /// Begins the animation of the Effect.
         /// </summary>
@@ -50,34 +55,6 @@ namespace Tweens
 
             owner.StartCoroutine(stopCoroutine);
             owner.StartCoroutine(lerpCoroutine);
-        }
-
-        private IEnumerator SendCompletedMessage()
-        {
-            yield return new WaitUntil(() => _lerper.IsComplete);
-
-            isMarkedForErasure = true;
-            OnEffectCompleted?.Invoke(this, EventArgs.Empty);
-        }
-
-        protected void SetCoroutines()
-        {
-            lerpCoroutine = _lerper.Start();
-            stopCoroutine = SendCompletedMessage();
-        }
-
-        /// <summary>
-        /// Stops the Effect's animations.
-        /// </summary>
-        /// <param name="owner">The MonoBehaviour object that the Effect Builder belongs to
-        /// and drives all Effect coroutines.</param>
-        public void Stop(MonoBehaviour owner)
-        {
-            owner.StopCoroutine(lerpCoroutine);
-
-            OnEffectCompleted?.Invoke(this, EventArgs.Empty);
-            isMarkedForErasure = true;
-            _lerper.IsComplete = true;
         }
 
         /// <summary>
@@ -101,31 +78,36 @@ namespace Tweens
         }
 
         /// <summary>
-        /// Resets the Effect's animation and promptly executes it again.
+        /// Stops the Effect's animations.
         /// </summary>
         /// <param name="owner">The MonoBehaviour object that the Effect Builder belongs to
         /// and drives all Effect coroutines.</param>
-        public void Restart(MonoBehaviour owner)
+        public void Stop(MonoBehaviour owner)
         {
-            _lerper.Restart();
-            SetCoroutines();
+            owner.StopCoroutine(lerpCoroutine);
 
-            Execute(owner);
+            OnEffectCompleted?.Invoke(this, EventArgs.Empty);
+            isMarkedForErasure = true;
+            _lerper.IsComplete = true;
+        }
+        #endregion
+
+        #region Helpers
+        private IEnumerator SendCompletedMessage()
+        {
+            yield return new WaitUntil(() => _lerper.IsComplete);
+
+            isMarkedForErasure = true;
+            OnEffectCompleted?.Invoke(this, EventArgs.Empty);
         }
 
-        /// <summary>
-        /// Resets the Effect's animations.
-        /// </summary>
-        /// <param name="owner">The MonoBehaviour object that the Effect Builder belongs to
-        /// and drives all Effect coroutines.</param>
-        /// <param name="keepOriginalStartValue">Determines whether the Effect's start value (ie., the value of the Owner upon
-        /// the first execution) is kept when reseting the Effect. If true, the start value stays the same. If false,
-        /// the start value will be updated according to the Owner.</param>
-        public void Reset(MonoBehaviour owner, bool keepOriginalStartValue = false)
+        protected void SetCoroutines()
         {
-            _lerper.Reset(keepOriginalStartValue);
-            SetCoroutines();
+            lerpCoroutine = _lerper.Start();
+            stopCoroutine = SendCompletedMessage();
         }
+
+        #endregion
     }
 
 }

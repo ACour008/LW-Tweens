@@ -5,6 +5,15 @@ The format is based on [Keeyp a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+This section will be utilized when the project is released and will contain information for upcoming features and changes.
+
+
+## [0.1.1-alpha] - Sept 24, 2022
+### Added
+- All effects are automatically removed from the EffectBuilder once they are executed. This cleans up the main API and allows the user to maintain the the same EffectBuilder for new Effects.
+
+### Removed
+- Restart, Reset and Clear methods in Effect & EffectBuilders due to the added features.
 
 ## [0.0.1-alpha] - Sept 23, 2022
 ### Added
@@ -19,4 +28,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 [Unreleased]:
+[0.1.1] https://github.com/ACour008/Tween-Daddy/releases/tag/v.0.1.1-alpha
 [0.0.1-alpha] https://github.com/ACour008/Tween-Daddy/releases/tag/v.0.0.1-alpha

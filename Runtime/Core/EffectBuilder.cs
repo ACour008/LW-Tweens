@@ -87,14 +87,6 @@ namespace Tweens
             return this;
         }
 
-        private IEnumerator DestroyAfterCompletion(Effect effect)
-        {
-            yield return new WaitUntil(() => effect.IsMarkedForErasure);
-
-            UnregisterEvents(effect);
-            effects.Remove(effect);
-        }
-
         /// <summary>
         /// Runs every effect that has been added to the EffectBuilder.
         /// </summary>
@@ -131,122 +123,51 @@ namespace Tweens
         }
 
         /// <summary>
-        /// 
+        /// Searches for and pauses the given Effect. If the effect is exists, it is not marked for destruction while paused.
         /// </summary>
-        /// <param name="eventType"></param>
+        /// <param name="effect">The effect that was previously supplied to the EffectBuilder object.</param>
         /// <returns></returns>
-        public EffectBuilder PauseEffect(Type eventType)
+        public EffectBuilder PauseEffect(Effect effect)
         {
-            foreach (Effect effect in effects)
+            foreach (Effect eff in effects)
             {
-                if (effect.GetType() == eventType)
-                {
-                    effect.Pause(Owner);
-                }
+                if (eff == effect) eff.Pause(Owner);
             }
 
             return this;
         }
 
         /// <summary>
-        /// Resets every effect that has been added to the EffectBuilder.
+        /// Resumes every effect that has been paused.
         /// </summary>
-        /// <param name="keepOriginalStartValue">Determines whether the Effect's start value (ie., the value of the Owner upon
-        /// the first execution) is kept when reseting the Effect. If true, the start value stays the same. If false,
-        /// the start value will be updated according to the Owner.</param>
         /// <returns>The current EffectBuilder object</returns>
-        public EffectBuilder ResetAll(bool keepOriginalStartValue = false)
-        {
-            foreach(Effect effect in effects)
-            {
-                effect.Reset(Owner, keepOriginalStartValue);
-            }
-
-            return this;
-        }
-
-        /// <summary>
-        /// Resets the specified Effect type.
-        /// </summary>
-        /// <param name="effectType">The System.Type of Effect(s) that should be reset.</param>
-        /// <param name="keepOriginalStartValue">Determines whether the Effect's start value (ie., the value of the Owner upon
-        /// the first execution) is kept when reseting the Effect. If true, the start value stays the same. If false,
-        /// the start value will be updated according to the Owner.</param>
-        /// <returns>The current EffectBuilder object.</returns>
-        public EffectBuilder ResetEffect(Type effectType, bool keepOriginalStartValue = false)
-        {
-            foreach(Effect effect in effects)
-            {
-                if (effect.GetType() == effectType)
-                {
-                    effect.Reset(Owner, keepOriginalStartValue);
-                }
-            }
-
-            return this;
-        }
-
-        /// <summary>
-        /// Resets all Effects and immediately executes them.
-        /// </summary>
-        /// <returns>The current EffectBuilder object.</returns>
-        public EffectBuilder RestartAll()
-        {
-            foreach (Effect effect in effects)
-            {
-                effect.Restart(Owner);
-            }
-
-            return this;
-        }
-
-        /// <summary>
-        /// Restarts the specified type of Event(s) and immediately executes it.
-        /// </summary>
-        /// <param name="eventType">The System.Type of Effect(s) to be restarted.</param>
-        /// <returns>The current EffectBuilder object.</returns>
-        public EffectBuilder RestartEvent(Type eventType)
-        {
-            foreach (Effect effect in effects)
-            {
-                if (effect.GetType() == eventType)
-                {
-                    effect.Restart(Owner);
-                }
-            }
-
-            return this;
-        }
-
-        /// <summary>
-        /// Continues all Effects if they were paused.
-        /// </summary>
-        /// <returns>The current EffectBuilder object.</returns>
         public EffectBuilder ResumeAll()
         {
-            foreach (Effect effect in effects)
+            foreach(Effect effect in effects)
             {
                 effect.Resume(Owner);
             }
 
-            effectsPaused = false;
-            effectsPlaying = true;
-
             return this;
         }
-        
+
         /// <summary>
-        /// Resumes the specified type of Event(s) if paused.
+        /// Searches for and resumes the given Effect if it is paused.
         /// </summary>
-        /// <param name="effectType">The System.Type of Effect(s) to be paused.</param>
-        /// <returns>The current EffectBuilder object.</returns>
-        public EffectBuilder ResumeEvent(Type effectType)
+        /// <param name="effect">An effect that was previously supplied to the EffectBuilder object.</param>
+        /// <returns>The current EffectBuilder object</returns>
+        public EffectBuilder ResumeEffect(Effect effect)
         {
+            foreach(Effect eff in effects)
+            {
+                if (eff == effect) eff.Resume();
+            }
+
             return this;
         }
 
         /// <summary>
-        /// Stops every effect that has been added to the EffectBuilder.
+        /// Stops every effect, marks them for destruction, and removes them from the EffectBuilder object.
         /// </summary>
         /// <returns>The current EffectBuilder object.</returns>
         public EffectBuilder StopAll()
@@ -263,14 +184,20 @@ namespace Tweens
             return this;
         }
 
-        public EffectBuilder StopEffect(Type effectType)
+        /// <summary>
+        /// Searches for the given effect and stops it if found. It is marked it for destruction and removed
+        /// from the EffectBuilder object.
+        /// </summary>
+        /// <param name="effect">The effect that was previously supplied tot he EffectBuilder object.</param>
+        /// <returns>The current EffectBuilder object.</returns>
+        public EffectBuilder StopEffect(Effect effect)
         {
-            foreach (Effect effect in effects)
+            foreach (Effect eff in effects)
             {
-                if (effect.GetType() == effectType)
+                if (eff == effect)
                 {
-                    effect.Stop(Owner);
-                    effects.Remove(effect);
+                    eff.Stop(Owner);
+                    effects.Remove(eff);
                 }
             }
 
@@ -312,6 +239,16 @@ namespace Tweens
                 OnExecutionCompleted?.Invoke(this, EventArgs.Empty);
                 effectsPlaying = false;
             }
+        }
+        #endregion
+
+        #region Helpers
+        private IEnumerator DestroyAfterCompletion(Effect effect)
+        {
+            yield return new WaitUntil(() => effect.IsMarkedForErasure);
+
+            UnregisterEvents(effect);
+            effects.Remove(effect);
         }
         #endregion
     }
