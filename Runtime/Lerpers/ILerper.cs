@@ -8,6 +8,4 @@ public interface ILerper
     public bool IsPaused { get; set; }
 
     public IEnumerator Start();
-    public void Restart();
-    public void Reset(bool keepOriginalStartValue = false);
 }

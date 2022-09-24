@@ -50,9 +50,9 @@ namespace Tweens
         #endregion
 
         /// <summary>
-        /// The constructor of EffectBuilder
+        /// Initializes a new instance of the <see cref="EffectBuilder" class/>
         /// </summary>
-        /// <param name="owner">The MonoBehaviour object that the Effect Builder belongs to & drives all Effect coroutines.</param>
+        /// <param name="owner">The MonoBehaviour object that the EffectBuilder utilizes to run Effect animations.</param>
         public EffectBuilder(MonoBehaviour owner)
         {
             Owner = owner;
@@ -88,7 +88,8 @@ namespace Tweens
         }
 
         /// <summary>
-        /// Runs every effect that has been added to the EffectBuilder.
+        /// Runs every effect that has been added to the EffectBuilder. All effects are marked for detruction and removed
+        /// after the have completed their animation.
         /// </summary>
         /// <returns>The current EffectBuilder object.</returns>
         public EffectBuilder ExecuteAll()
@@ -160,7 +161,7 @@ namespace Tweens
         {
             foreach(Effect eff in effects)
             {
-                if (eff == effect) eff.Resume();
+                if (eff == effect) eff.Resume(Owner);
             }
 
             return this;
@@ -208,21 +209,18 @@ namespace Tweens
         #region Events
         private void RegisterEvents(Effect effect)
         {
-            Debug.Log($"{effect} is being registered");
             effect.OnEffectStarted += Effect_OnEffectStarted;
             effect.OnEffectCompleted += Effect_OnEffectCompleted;
         }
 
         private void UnregisterEvents(Effect effect)
         {
-            Debug.Log($"{effect} is being unregistered");
             effect.OnEffectStarted -= Effect_OnEffectStarted;
             effect.OnEffectCompleted -= Effect_OnEffectCompleted;
         }
 
         private void Effect_OnEffectStarted(object sender, EventArgs e)
         {
-            Debug.Log("EFFECTBUILDER: Effects started");
             coroutinesRunning++;
             if (coroutinesRunning >= 1)
             {
@@ -232,7 +230,6 @@ namespace Tweens
         }
         private void Effect_OnEffectCompleted(object sender, EventArgs e)
         {
-            Debug.Log("EFFECTBUILDER: Effects done");
             coroutinesRunning--;
             if (coroutinesRunning <= 0)
             {

@@ -14,6 +14,12 @@ This section will be utilized when the project is released and will contain info
 
 ### Removed
 - Restart, Reset and Clear methods in Effect & EffectBuilders due to the added features.
+- Reset and Restart also removed from Lerpers.
+
+### Fixed
+- The resume method of EffectBuilder is now given the proper MonoBehaviour owner.
+- ILerp interface is updated to reflect changes in Lerpers.
+
 
 ## [0.0.1-alpha] - Sept 23, 2022
 ### Added
