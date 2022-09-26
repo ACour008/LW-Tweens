@@ -8,9 +8,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 This section will be utilized when the project is released and will contain information for upcoming features and changes.
 
 
-## [0.1.1-alpha] - Sept 24, 2022
+## [0.1.1-alpha] - Sept 26, 2022
 ### Added
 - All effects are automatically removed from the EffectBuilder once they are executed. This cleans up the main API and allows the user to maintain the the same EffectBuilder for new Effects.
+- A basic usage sample in the Samples folder.
 
 ### Removed
 - Restart, Reset and Clear methods in Effect & EffectBuilders due to the added features.
@@ -19,6 +20,9 @@ This section will be utilized when the project is released and will contain info
 ### Fixed
 - The resume method of EffectBuilder is now given the proper MonoBehaviour owner.
 - ILerp interface is updated to reflect changes in Lerpers.
+
+### Updated
+- The README is now updated.
 
 
 ## [0.0.1-alpha] - Sept 23, 2022
