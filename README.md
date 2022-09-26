@@ -23,7 +23,7 @@ You can use install the Tween Daddy package in your Unity project through Github
 ## How to Use Tween Daddy
 `Samples/BasicUsage.cs`
 
-```
+```C#
 using UnityEngine;
 using Tweens;
 
