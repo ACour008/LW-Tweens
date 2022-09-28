@@ -4,7 +4,7 @@ using Tweens.Lerpers;
 namespace Tweens
 {
     /// <summary>
-    /// Moves the position of a GameObject based on the EffectData provided to it.
+    /// Moves the position of a GameObject.
     /// 
     /// Currently supports the following components:
     /// - Transform
@@ -12,21 +12,29 @@ namespace Tweens
     /// </summary>
     public class Move : Effect
     {
-        public Move(Transform transform, EffectData<Vector3> effectData)
+        public Move(Transform transform, EffectData<Vector3> effectData) :
+            this(transform, effectData.EndValue, effectData.Duration, effectData.StartDelay)
+        {
+        }
+
+        public Move(Transform transform, Vector3 endPosition, float durationInSeconds, float startDelaySeconds)
         {
             _lerper = new Vector3Lerper()
-                .Init(() => transform.position, (pos) => transform.position = pos, effectData.EndValue, effectData.Duration, effectData.StartDelay);
+                .Init(() => transform.position, (pos) => transform.position = pos, endPosition, durationInSeconds, startDelaySeconds);
 
             SetCoroutines();
         }
 
-        public Move(RectTransform rectTransform, EffectData<Vector3> effectData)
+        public Move(RectTransform rectTransform, EffectData<Vector3> effectData) :
+            this(rectTransform, effectData.EndValue, effectData.Duration, effectData.StartDelay)
         {
-            _lerper = new Vector3Lerper()
-                .Init(() => rectTransform.anchoredPosition3D, (pos) => rectTransform.anchoredPosition3D = pos, effectData.EndValue, effectData.Duration, effectData.StartDelay);
-
-            SetCoroutines();
         }
 
+        public Move(RectTransform rectTransform, Vector3 endPosition, float durationInSeconds, float startDelaySeconds)
+        {
+            _lerper = new Vector3Lerper()
+                .Init(() => rectTransform.anchoredPosition3D, (pos) => rectTransform.anchoredPosition3D = pos, endPosition, durationInSeconds, startDelaySeconds);
+            SetCoroutines();
+        }
     }
 }

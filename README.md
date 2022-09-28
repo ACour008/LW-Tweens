@@ -38,18 +38,16 @@ public class BasicUsage : MonoBehaviour
     void Start()
     {
         effectBuilder = new EffectBuilder(this);
+        Effect moveEffect = new Move(transform, endTarget, durationInSeconds, startDelaySeconds);
 
-        EffectData<Vector3> effectData = new EffectData<Vector3>(endTarget, durationInSeconds, startDelaySeconds);
-
-        effectBuilder.AddEffect(new Move(transform, effectData))
+        effectBuilder.AddEffect(moveEffect)
             .ExecuteAll();
     }
 
 
 }
-
 ```
-More samples coming soon.
+[More Samples Here.](https://github.com/ACour008/Tween-Daddy/tree/main/Samples)
 
 ## Contributing to the project
 There is a need for testing so if you would like to contribute, feel free to reach out.

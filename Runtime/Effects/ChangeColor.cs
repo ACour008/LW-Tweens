@@ -11,14 +11,34 @@ namespace Tweens
     ///
     /// Currently supports the following Components:
     /// - MeshRenderer
+    /// - SpriteRenderer
     /// </summary>
     public class ChangeColor : Effect
     {
-        public ChangeColor(MeshRenderer meshRenderer, EffectData<Color> effectData)
+
+        public ChangeColor(SpriteRenderer spriteRenderer, EffectData<Color> effectData) :
+            this(spriteRenderer, effectData.EndValue, effectData.Duration, effectData.StartDelay)
         {
-            _lerper = new ColorLerper().
-                Init(() => meshRenderer.material.color, (newColor) => meshRenderer.material.color = newColor,
-                    effectData.EndValue, effectData.Duration, effectData.StartDelay);
+        }
+
+        public ChangeColor(SpriteRenderer spriteRenderer, Color endValue, float durationInSeconds, float startDelaySeconds)
+        {
+            _lerper = new ColorLerper()
+                .Init(() => spriteRenderer.color, (c) => spriteRenderer.color = c, endValue, durationInSeconds, startDelaySeconds);
+
+            SetCoroutines();
+        }
+
+        public ChangeColor(MeshRenderer meshRenderer, EffectData<Color> effectData):
+            this(meshRenderer, effectData.EndValue, effectData.Duration, effectData.StartDelay)
+        {
+        }
+
+        public ChangeColor(MeshRenderer meshRenderer, Color endValue, float durationInSeconds, float startDelaySeconds)
+        {
+            _lerper = new ColorLerper()
+                .Init(() => meshRenderer.material.color, (newColor) => meshRenderer.material.color = newColor, 
+                    endValue, durationInSeconds, startDelaySeconds);
 
             SetCoroutines();
         }
