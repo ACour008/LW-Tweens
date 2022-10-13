@@ -11,16 +11,20 @@ namespace Tweens
         private T endValue;
         private float durationInSecs;
         private float startDelayInSecs;
+        private EasingOptions options;
 
         public T EndValue { get => endValue; set => endValue = value; }
         public float Duration { get => durationInSecs; set => durationInSecs = value; }
         public float StartDelay { get => startDelayInSecs; set => startDelayInSecs = value; }
+        public EasingOptions Options {get => options; set => options = value; }
 
-        public EffectData(T endValue, float durationInSeconds, float startDelayInSeconds)
+
+        public EffectData(T endValue, float durationInSeconds, float startDelayInSeconds, EasingOptions options = null)
         {
             this.endValue = endValue;
             this.durationInSecs = durationInSeconds;
             this.startDelayInSecs = startDelayInSeconds;
+            this.options = options;
         }
     }
 }

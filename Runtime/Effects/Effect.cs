@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using Tweens.Lerpers;
 
 namespace Tweens
 {
@@ -101,9 +102,9 @@ namespace Tweens
             OnEffectCompleted?.Invoke(this, EventArgs.Empty);
         }
 
-        protected void SetCoroutines()
+        protected void SetCoroutines(IEasing easing = null, int smoothing = default(int))
         {
-            lerpCoroutine = _lerper.Start();
+            lerpCoroutine = _lerper.Start(easing, smoothing);
             stopCoroutine = SendCompletedMessage();
         }
 

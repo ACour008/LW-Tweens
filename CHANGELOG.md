@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 This section will be utilized when the project is released and will contain information for upcoming features and changes.
 
+## [0.2.0-alpha] - Oct 13, 2022
+### Added
+- IEasing interface: For extending easing functions.
+- Easing functions: Current ones include linear, SmoothIn & SmoothOut.
+- Easing Options: contains the type of easing function and its smoothing exponent.
+- Easing factory: caches all easing functions and retries easing functions with a Get method. 
+
+### Updated
+- All effects can now have easing options injected into them via their constructor.
+- All lerpers also have easing functions injected into them via the Effect class.
 
 ## [0.1.1-alpha] - Sept 26, 2022
 ### Added
