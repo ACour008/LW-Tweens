@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using Tweens.Lerpers;
+using Tweens.Easing;
 
 namespace Tweens
 {
@@ -32,13 +33,10 @@ namespace Tweens
         /// <param name="startDelaySeconds"></param>
         public Move(Transform transform, Vector3 endPosition, float durationInSeconds, float startDelaySeconds, EasingOptions options = null)
         {
-            IEasing easing = (options != null) ?  EasingFactory.Get(options.easingType) : EasingFactory.Get(EaseType.LINEAR);
-            int smoothing = (options != null) ? options.smoothing : 2;
-
             _lerper = new Vector3Lerper()
-                .Init(() => transform.position, (pos) => transform.position = pos, endPosition, durationInSeconds, startDelaySeconds);
+                .Init(() => transform.position, (pos) => transform.position = pos, endPosition, durationInSeconds, startDelaySeconds, options);
 
-            SetCoroutines(easing, smoothing);
+            SetCoroutines();
         }
 
         /// <summary>
@@ -61,12 +59,10 @@ namespace Tweens
         /// <param name="startDelaySeconds"></param>
         public Move(RectTransform rectTransform, Vector3 endPosition, float durationInSeconds, float startDelaySeconds, EasingOptions options = null)
         {
-            IEasing easing = (options != null) ?  EasingFactory.Get(options.easingType) : EasingFactory.Get(EaseType.LINEAR);
-            int smoothing = (options != null) ? options.smoothing : 2;
-
             _lerper = new Vector3Lerper()
-                .Init(() => rectTransform.anchoredPosition3D, (pos) => rectTransform.anchoredPosition3D = pos, endPosition, durationInSeconds, startDelaySeconds);
-            SetCoroutines(easing, smoothing);
+                .Init(() => rectTransform.anchoredPosition3D, (pos) => rectTransform.anchoredPosition3D = pos, 
+                    endPosition, durationInSeconds, startDelaySeconds, options);
+            SetCoroutines();
         }
     }
 }

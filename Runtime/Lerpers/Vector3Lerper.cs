@@ -1,4 +1,5 @@
 using System.Collections;
+using Tweens.Easing;
 using UnityEngine;
 
 namespace Tweens.Lerpers
@@ -20,7 +21,7 @@ namespace Tweens.Lerpers
             while(_timeElapsed < duration)
             {
                 float complete = _timeElapsed / duration;
-                _setter(_startValue + (_endValue - _startValue) * Mathf.SmoothStep(0, 1, complete));
+                _setter(_startValue + (_endValue - _startValue) * _easing.Ease(complete, _smoothing));
                 
                 if (!_isPaused) _timeElapsed += Time.deltaTime;
 

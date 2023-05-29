@@ -102,9 +102,9 @@ namespace Tweens
             OnEffectCompleted?.Invoke(this, EventArgs.Empty);
         }
 
-        protected void SetCoroutines(IEasing easing = null, int smoothing = default(int))
+        protected void SetCoroutines()
         {
-            lerpCoroutine = _lerper.Start(easing, smoothing);
+            lerpCoroutine = _lerper.Start();
             stopCoroutine = SendCompletedMessage();
         }
 

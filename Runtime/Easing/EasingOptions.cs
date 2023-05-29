@@ -1,12 +1,15 @@
-[System.Serializable]
-public class EasingOptions
+namespace Tweens.Easing
 {
-    public EaseType easingType;
-    public int smoothing;
-
-    public EasingOptions(EaseType easingType, int smoothing)
+    [System.Serializable]
+    public class EasingOptions
     {
-        this.easingType = easingType;
-        this.smoothing = smoothing;
+        public EaseType easingType;
+        public int smoothing;
+
+        public EasingOptions(EaseType easingType, int smoothing)
+        {
+            this.easingType = easingType;
+            this.smoothing = smoothing;
+        }
     }
 }

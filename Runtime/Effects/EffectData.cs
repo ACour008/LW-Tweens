@@ -1,3 +1,5 @@
+using Tweens.Easing;
+
 namespace Tweens
 {
     /// <summary>

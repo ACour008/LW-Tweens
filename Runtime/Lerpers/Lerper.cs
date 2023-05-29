@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using Tweens.Easing;
 
 namespace Tweens.Lerpers
 {
@@ -17,6 +18,8 @@ namespace Tweens.Lerpers
         protected T1 _startValue;
         protected T1 _endValue;
         protected float _durationInSecs;
+        protected IEasing _easing;
+        protected int _smoothing;
         protected float _timeElapsed = 0;
         protected bool _isComplete;
         protected bool _isPaused;
@@ -28,7 +31,8 @@ namespace Tweens.Lerpers
 
         public bool IsPaused { get => _isPaused; set => _isPaused = value; }
 
-        public Lerper<T1> Init(Getter<T1> getter, Setter<T1> setter, T1 endValue, float durationInSecs, float startDelayInSecs)
+        public Lerper<T1> Init(Getter<T1> getter, Setter<T1> setter, T1 endValue, float durationInSecs,
+            float startDelayInSecs, EasingOptions options = null)
         {
             _getter = getter;
             _setter = setter;
@@ -36,6 +40,8 @@ namespace Tweens.Lerpers
             _endValue = endValue;
             _durationInSecs = durationInSecs;
             _wait = new WaitForSeconds(startDelayInSecs);
+            _easing = (options != null) ? EasingFactory.Get(options.easingType) : EasingFactory.Get(EaseType.LINEAR);
+            _smoothing = (options != null) ? options.smoothing : 2;
 
             return this;
 
