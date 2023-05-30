@@ -27,8 +27,6 @@ namespace Tweens
         {
             _lerper = new FloatLerper()
                 .Init(() => canvasGroup.alpha, (newColor) => canvasGroup.alpha = newColor, endValue, durationInSeconds, startDelaySeconds);
-
-            SetCoroutines();
         }
 
         public Fade(Graphic graphic, EffectData<float> effectData) :
@@ -42,8 +40,6 @@ namespace Tweens
 
             _lerper = new ColorLerper()
                 .Init(() => graphic.color, (newColor) => graphic.color = newColor, endColor, durationInSeconds, startDelaySeconds);
-
-            SetCoroutines();
         }
 
         public Fade(SpriteRenderer spriteRenderer, EffectData<float> effectData) :
@@ -57,8 +53,6 @@ namespace Tweens
 
             _lerper = new ColorLerper()
                 .Init(() => spriteRenderer.color, (newColor) => spriteRenderer.color = newColor, endColor, durationInSeconds, startDelaySeconds);
-
-            SetCoroutines();
         }
 
         public Fade(Button button, EffectData<float> effectData) :
@@ -73,8 +67,6 @@ namespace Tweens
 
             _lerper = new ColorLerper()
                 .Init(() => graphic.color, (newColor) => graphic.color = newColor, endColor, durationInSeconds, startDelaySeconds);
-
-            SetCoroutines();
         }
 
         public Fade(MeshRenderer meshRenderer, EffectData<float> effectData) :
@@ -92,8 +84,6 @@ namespace Tweens
             _lerper = new ColorLerper()
                 .Init(() => meshRenderer.material.color, (newColor) => meshRenderer.material.color = newColor,
                     endColor, durationInSeconds, startDelaySeconds);
-
-            SetCoroutines();
         }
     }
 }

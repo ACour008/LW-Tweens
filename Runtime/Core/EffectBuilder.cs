@@ -10,7 +10,8 @@ namespace Tweens
     /// </summary>
     public class EffectBuilder
     {
-        private List<Effect> effects = new List<Effect>();
+        // private List<Effect> effects = new List<Effect>();
+        private Queue<Effect> effects = new Queue<Effect>();
         private bool effectsPlaying = false;
         private bool effectsPaused = false;
         private int coroutinesRunning = 0;
@@ -67,7 +68,9 @@ namespace Tweens
         /// <seealso cref="Tweens.Effect"/>
         public EffectBuilder AddEffect(Effect effect)
         {
-            effects.Add(effect);
+            // effects.Add(effect);
+
+            effects.Enqueue(effect);
             RegisterEvents(effect);
             return this;
         }
@@ -97,11 +100,20 @@ namespace Tweens
             coroutinesRunning = 0;
             OnExecutionStarted?.Invoke(this, EventArgs.Empty);
 
-            foreach (Effect effect in effects)
+            if (effects.Count > 0)
             {
-                effect.Execute(Owner);
-                Owner.StartCoroutine(DestroyAfterCompletion(effect));
+                Effect current = effects.Dequeue();
+                current.Execute(Owner);
+                Owner.StartCoroutine(DestroyAfterCompletion(current));
             }
+            
+            // throw error and suggest adding effects first.
+
+            // foreach (Effect effect in effects)
+            // {
+            //     effect.Execute(Owner);
+            //     Owner.StartCoroutine(DestroyAfterCompletion(effect));
+            // }
 
             return this;
         }
@@ -112,13 +124,13 @@ namespace Tweens
         /// <returns>The current EffectBuilder object</returns>
         public EffectBuilder PauseAll()
         {
-            foreach (Effect effect in effects)
-            {
-                effect.Pause(Owner);
-            }
+            // foreach (Effect effect in effects)
+            // {
+            //     effect.Pause(Owner);
+            // }
 
-            effectsPlaying = false;
-            effectsPaused = true;
+            // effectsPlaying = false;
+            // effectsPaused = true;
 
             return this;
         }
@@ -130,10 +142,10 @@ namespace Tweens
         /// <returns></returns>
         public EffectBuilder PauseEffect(Effect effect)
         {
-            foreach (Effect eff in effects)
-            {
-                if (eff == effect) eff.Pause(Owner);
-            }
+            // foreach (Effect eff in effects)
+            // {
+            //     if (eff == effect) eff.Pause(Owner);
+            // }
 
             return this;
         }
@@ -144,10 +156,10 @@ namespace Tweens
         /// <returns>The current EffectBuilder object</returns>
         public EffectBuilder ResumeAll()
         {
-            foreach(Effect effect in effects)
-            {
-                effect.Resume(Owner);
-            }
+            // foreach(Effect effect in effects)
+            // {
+            //     effect.Resume(Owner);
+            // }
 
             return this;
         }
@@ -159,10 +171,10 @@ namespace Tweens
         /// <returns>The current EffectBuilder object</returns>
         public EffectBuilder ResumeEffect(Effect effect)
         {
-            foreach(Effect eff in effects)
-            {
-                if (eff == effect) eff.Resume(Owner);
-            }
+            // foreach(Effect eff in effects)
+            // {
+            //     if (eff == effect) eff.Resume(Owner);
+            // }
 
             return this;
         }
@@ -173,16 +185,17 @@ namespace Tweens
         /// <returns>The current EffectBuilder object.</returns>
         public EffectBuilder StopAll()
         {
-            foreach (Effect effect in effects)
-            {
-                effect.Stop(Owner);
-                effects.Remove(effect);
-            }
-
-            effectsPlaying = false;
-            effectsPaused = false;
-
             return this;
+            // foreach (Effect effect in effects)
+            // {
+            //     effect.Stop(Owner);
+            //     effects.Remove(effect);
+            // }
+
+            // effectsPlaying = false;
+            // effectsPaused = false;
+
+            // return this;
         }
 
         /// <summary>
@@ -193,14 +206,14 @@ namespace Tweens
         /// <returns>The current EffectBuilder object.</returns>
         public EffectBuilder StopEffect(Effect effect)
         {
-            foreach (Effect eff in effects)
-            {
-                if (eff == effect)
-                {
-                    eff.Stop(Owner);
-                    effects.Remove(eff);
-                }
-            }
+            // foreach (Effect eff in effects)
+            // {
+            //     if (eff == effect)
+            //     {
+            //         eff.Stop(Owner);
+            //         effects.Remove(eff);
+            //     }
+            // }
 
             return this;
         }
@@ -229,12 +242,19 @@ namespace Tweens
             }
         }
         private void Effect_OnEffectCompleted(object sender, EventArgs e)
-        {
+        {   
             coroutinesRunning--;
-            if (coroutinesRunning <= 0)
+            if (coroutinesRunning < 1)
             {
                 OnExecutionCompleted?.Invoke(this, EventArgs.Empty);
                 effectsPlaying = false;
+            }
+
+            if (effects.Count >= 1)
+            {
+                Effect effect = effects.Dequeue();
+                effect.Execute(Owner);
+                Owner.StartCoroutine(DestroyAfterCompletion(effect));
             }
         }
         #endregion
@@ -245,7 +265,6 @@ namespace Tweens
             yield return new WaitUntil(() => effect.IsMarkedForErasure);
 
             UnregisterEvents(effect);
-            effects.Remove(effect);
         }
         #endregion
     }

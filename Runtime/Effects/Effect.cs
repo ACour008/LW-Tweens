@@ -11,8 +11,8 @@ namespace Tweens
     public abstract class Effect
     {
         protected ILerper _lerper;
-        protected IEnumerator lerpCoroutine;
-        protected IEnumerator stopCoroutine;
+        protected Coroutine lerpRoutine;
+        protected Coroutine completeRoutine;
         protected bool isMarkedForErasure;
 
         #region EventHandlers
@@ -54,8 +54,8 @@ namespace Tweens
         {
             OnEffectStarted?.Invoke(this, EventArgs.Empty);
 
-            owner.StartCoroutine(stopCoroutine);
-            owner.StartCoroutine(lerpCoroutine);
+            completeRoutine = owner.StartCoroutine(SendCompletedMessage());
+            lerpRoutine = owner.StartCoroutine(_lerper.Start());
         }
 
         /// <summary>
@@ -85,7 +85,7 @@ namespace Tweens
         /// and drives all Effect coroutines.</param>
         public void Stop(MonoBehaviour owner)
         {
-            owner.StopCoroutine(lerpCoroutine);
+            owner.StopCoroutine(lerpRoutine);
 
             OnEffectCompleted?.Invoke(this, EventArgs.Empty);
             isMarkedForErasure = true;
@@ -97,17 +97,9 @@ namespace Tweens
         private IEnumerator SendCompletedMessage()
         {
             yield return new WaitUntil(() => _lerper.IsComplete);
-
             isMarkedForErasure = true;
             OnEffectCompleted?.Invoke(this, EventArgs.Empty);
         }
-
-        protected void SetCoroutines()
-        {
-            lerpCoroutine = _lerper.Start();
-            stopCoroutine = SendCompletedMessage();
-        }
-
         #endregion
     }
 

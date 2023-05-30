@@ -35,8 +35,6 @@ namespace Tweens
         {
             _lerper = new Vector3Lerper()
                 .Init(() => transform.position, (pos) => transform.position = pos, endPosition, durationInSeconds, startDelaySeconds, options);
-
-            SetCoroutines();
         }
 
         /// <summary>
@@ -62,7 +60,6 @@ namespace Tweens
             _lerper = new Vector3Lerper()
                 .Init(() => rectTransform.anchoredPosition3D, (pos) => rectTransform.anchoredPosition3D = pos, 
                     endPosition, durationInSeconds, startDelaySeconds, options);
-            SetCoroutines();
         }
     }
 }

@@ -25,8 +25,6 @@ namespace Tweens
         {
             _lerper = new ColorLerper()
                 .Init(() => spriteRenderer.color, (c) => spriteRenderer.color = c, endValue, durationInSeconds, startDelaySeconds);
-
-            SetCoroutines();
         }
 
         public ChangeColor(MeshRenderer meshRenderer, EffectData<Color> effectData):
@@ -39,8 +37,6 @@ namespace Tweens
             _lerper = new ColorLerper()
                 .Init(() => meshRenderer.material.color, (newColor) => meshRenderer.material.color = newColor, 
                     endValue, durationInSeconds, startDelaySeconds);
-
-            SetCoroutines();
         }
     }
 

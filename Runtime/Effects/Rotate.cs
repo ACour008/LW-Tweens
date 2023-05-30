@@ -23,8 +23,6 @@ namespace Tweens
             _lerper = new Vector3Lerper()
                 .Init(() => transform.eulerAngles, (eulerAngles) => transform.eulerAngles = eulerAngles,
                     endPosition, durationInSeconds, startDelaySeconds);
-
-            SetCoroutines();
         }
 
         public Rotate(RectTransform rectTransform, EffectData<Vector3> effectData):
@@ -38,8 +36,6 @@ namespace Tweens
             _lerper = new Vector3Lerper()
                 .Init(() => rectTransform.eulerAngles, (eulerAngles) => rectTransform.eulerAngles = eulerAngles,
                     endPosition, durationInSeconds, startDelaySeconds);
-
-            SetCoroutines();
         }
     }
 }

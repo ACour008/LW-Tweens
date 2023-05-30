@@ -21,8 +21,8 @@ namespace Tweens.Lerpers
         protected IEasing _easing;
         protected int _smoothing;
         protected float _timeElapsed = 0;
-        protected bool _isComplete;
-        protected bool _isPaused;
+        protected bool _isComplete = false;
+        protected bool _isPaused = false;
         protected YieldInstruction _wait;
 
         public Type LerpType { get => _lerpType; }
@@ -42,7 +42,6 @@ namespace Tweens.Lerpers
             _wait = new WaitForSeconds(startDelayInSecs);
             _easing = (options != null) ? EasingFactory.Get(options.easingType) : EasingFactory.Get(EaseType.LINEAR);
             _smoothing = (options != null) ? options.smoothing : 2;
-
             return this;
 
         }

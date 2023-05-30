@@ -23,8 +23,6 @@ namespace Tweens
             _lerper = new Vector3Lerper()
                 .Init(() => transform.localScale, (newScale) => transform.localScale = newScale,
                     endScale, durationInSeconds, startDelaySeconds, options);
-
-            SetCoroutines();
         }
 
         public Scale(RectTransform rectTransform, EffectData<Vector3> effectData) :
@@ -37,8 +35,6 @@ namespace Tweens
             _lerper = new Vector3Lerper()
                .Init(() => rectTransform.localScale, (newScale) => rectTransform.localScale = newScale,
                    endScale, durationInSeconds, startDelaySeconds, options);
-
-            SetCoroutines();
         }
     }
 }
