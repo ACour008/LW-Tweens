@@ -50,7 +50,7 @@ namespace Tweens
         /// </summary>
         /// <param name="owner">The MonoBehaviour object that the Effect Builder belongs to
         /// and drives all Effect coroutines.</param>
-        public void Execute(MonoBehaviour owner)
+        public virtual void Execute(MonoBehaviour owner)
         {
             OnEffectStarted?.Invoke(this, EventArgs.Empty);
 
@@ -63,7 +63,7 @@ namespace Tweens
         /// </summary>
         /// <param name="owner">The MonoBehaviour object that the Effect Builder belongs to
         /// and drives all Effect coroutines.</param>
-        public void Pause(MonoBehaviour owner)
+        public virtual void Pause(MonoBehaviour owner)
         {
             if (!_lerper.IsPaused) _lerper.IsPaused = true;
         }
@@ -73,7 +73,7 @@ namespace Tweens
         /// </summary>
         /// <param name="owner">The MonoBehaviour object that the Effect Builder belongs to
         /// and drives all Effect coroutines.</param>
-        public void Resume(MonoBehaviour owner)
+        public virtual void Resume(MonoBehaviour owner)
         {
             if (_lerper.IsPaused) _lerper.IsPaused = false;
         }
@@ -83,7 +83,7 @@ namespace Tweens
         /// </summary>
         /// <param name="owner">The MonoBehaviour object that the Effect Builder belongs to
         /// and drives all Effect coroutines.</param>
-        public void Stop(MonoBehaviour owner)
+        public virtual void Stop(MonoBehaviour owner)
         {
             owner.StopCoroutine(lerpRoutine);
 
@@ -94,10 +94,20 @@ namespace Tweens
         #endregion
 
         #region Helpers
-        private IEnumerator SendCompletedMessage()
+        public virtual IEnumerator SendCompletedMessage()
         {
             yield return new WaitUntil(() => _lerper.IsComplete);
             isMarkedForErasure = true;
+            OnEffectCompleted?.Invoke(this, EventArgs.Empty);
+        }
+
+        protected void OnStartEffect()
+        {
+            OnEffectStarted?.Invoke(this, EventArgs.Empty);
+        }
+
+        protected void OnCompleteEffect()
+        {
             OnEffectCompleted?.Invoke(this, EventArgs.Empty);
         }
         #endregion

@@ -4,8 +4,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keeyp a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
-This section will be utilized when the project is released and will contain information for upcoming features and changes.
+##[0.3.0a] - July 30, 2022
+### Updated
+- Effects in builder are now chained. (Ie., will run subsequentially).
 
 ## [0.2.0-alpha] - Oct 13, 2022
 ### Added

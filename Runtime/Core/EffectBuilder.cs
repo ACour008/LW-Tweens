@@ -15,6 +15,7 @@ namespace Tweens
         private bool effectsPlaying = false;
         private bool effectsPaused = false;
         private int coroutinesRunning = 0;
+        private bool isSequential = false;
 
         #region Fields
         /// <summary>
@@ -37,6 +38,8 @@ namespace Tweens
         /// Returns the total count of effects currently playing.
         /// </summary>
         public int AnimationsRunning { get => coroutinesRunning; }
+
+        public bool IsSequentialExecution { get => isSequential; set => isSequential = value; }
         #endregion
 
         #region EventHandlers
@@ -95,7 +98,7 @@ namespace Tweens
         /// after the have completed their animation.
         /// </summary>
         /// <returns>The current EffectBuilder object.</returns>
-        public EffectBuilder ExecuteAll()
+        public EffectBuilder Execute()
         {
             coroutinesRunning = 0;
             OnExecutionStarted?.Invoke(this, EventArgs.Empty);
